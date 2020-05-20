@@ -20,20 +20,6 @@ function useUserMedia(context: AudioContext) {
               })
               .then((stream) => {
                 const sourceNode = context.createMediaStreamSource(stream);
-                // const loudnessAnalyzerNode = context.createAnalyser();
-                // setInterval(() => {
-                //   const array = new Uint8Array(loudnessAnalyzerNode.fftSize);
-                //   loudnessAnalyzerNode.getByteTimeDomainData(array);
-                //   let total = 0;
-                //   let max = 0;
-                //   for (let i in array) {
-                //     array[i] = Math.abs(array[i] - 128);
-                //     total += array[i];
-                //     max = Math.max(max, array[i]);
-                //   }
-                //   console.log(max,total /array.length);
-                // }, 2000);
-                // sourceNode.connect(loudnessAnalyzerNode);
                 setSource(sourceNode);
               })
               .catch((e) => {

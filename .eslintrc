@@ -1,0 +1,13 @@
+{
+    "extends": ["react-app"],
+    "globals": {
+      "Tracert": true,
+      "AlipayJSBridge": true
+    },
+    "rules": {
+      "no-param-reassign": "off",
+      "import/prefer-default-export": "off",
+      "@typescript-eslint/interface-name-prefix": "off"
+    }
+  }
+  

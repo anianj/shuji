@@ -9,16 +9,17 @@ const createWindow = () => {
   const mainWindow = new BrowserWindow({
     height: 90,
     width: 567,
-    minWidth:567,
-    minHeight:90,
-    resizable:true,
-    frame:false,
-    transparent:true,
-    alwaysOnTop:true,
-    hasShadow:false,
+    minWidth: 567,
+    minHeight: 90,
+    resizable: true,
+    frame: true,
+    transparent: false,
+    alwaysOnTop: true,
+    hasShadow: false,
     webPreferences: {
-      nodeIntegration: true
-    }
+      nodeIntegration: true,
+      webSecurity: false,
+    },
   });
 
   // and load the index.html of the app.
@@ -27,7 +28,6 @@ const createWindow = () => {
   // Open the DevTools.
   //mainWindow.webContents.openDevTools();
 };
-
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
