@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import classnames from 'classnames';
 import styles from './index.module.css';
+import Switch from 'react-switch';
 
 interface SubtitleProps {
   content: string[];
@@ -10,55 +11,66 @@ interface SubtitleProps {
 
 const Subtitle: React.FC<SubtitleProps> = ({ content, active, translated }) => {
   const container = useRef<HTMLDivElement>();
-  const heights = useRef<Array<number>>([]);
+  const timer = useRef<number>()
+  const [checked, setChecked] = useState<boolean>(true);
   useEffect(() => {
-    const cancelHandle = setInterval(() => {
-      if (container.current) {
-        container.current.scrollTop = container.current.scrollHeight;
-      }
-    }, 1000);
-    return () => {
-      window.clearInterval(cancelHandle);
+    function autoScroll() {
+      timer.current = requestAnimationFrame(() => {
+        if (container.current && checked) {
+          container.current.scrollTop = container.current.scrollHeight;
+        }
+        autoScroll()
+      })
     };
-  }, []);
+    autoScroll();
+    return () => {
+      window.cancelAnimationFrame(timer.current);
+    };
+  }, [checked]);
   useEffect(() => {
-    const originalSentenceContainer = container.current.querySelector(
-      `.original-sentence${content.length - 2}`,
-    );
-    if (originalSentenceContainer) {
-      const { height } = originalSentenceContainer.getBoundingClientRect();
-      heights.current.push(height);
+    const containerEl = container.current;
+    function scroll() {
+      if(containerEl.offsetHeight + containerEl.scrollTop === containerEl.scrollHeight) {
+        setChecked(true)
+      } else {
+        setChecked(false);
+      }
     }
-  }, [content.length]);
+    containerEl.addEventListener('scroll', scroll)
+    return () => {
+      containerEl.removeEventListener('scroll', scroll);
+    }
+  }, [])
   return (
-    <div
-      className={classnames(
-        styles.subtitle,
-        active ? styles.active : styles.inactive,
-      )}
-      ref={container}
-    >
-      <div className={styles.original}>
-        {content.map((sentence, idx) => (
-          <span
-            className={classnames(styles.sentence, 'original-sentence' + idx)}
-            key={idx}
-            style={{ opacity: content.length - idx < 3 ? 1 : 0.5 }}
-          >
-            {sentence}
-          </span>
-        ))}
-      </div>
-      <div className={styles.translated}>
-        {translated.map((sentenceTranslated, idx) => (
-          <span
-            className={styles.sentence}
-            key={idx}
-            style={{ opacity: translated.length - idx < 2 ? 1 : 0.5, height: heights.current[idx] || 'auto' }}
-          >
-            {sentenceTranslated === 'error' ? '翻译错误' : sentenceTranslated}
-          </span>
-        ))}
+    <div className={styles.subtitleContainer}>
+      <div
+        className={classnames(
+          styles.subtitle,
+          active ? styles.active : styles.inactive,
+        )}
+        ref={container}
+      >
+        {content.map((sentence, index) => {
+          const sentenceTranslated = translated[index];
+          return (
+            <div className={styles.sentenceContainer} key={index}>
+              <div
+                className={styles.original}
+                style={{ opacity: content.length - index < 3 ? 1 : 0.5 }}
+              >
+                {sentence}
+              </div>
+              <div
+                className={styles.translated}
+                style={{ opacity: translated.length - index < 2 ? 1 : 0.5 }}
+              >
+                {sentenceTranslated === 'error'
+                  ? '翻译错误'
+                  : sentenceTranslated || ''}
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

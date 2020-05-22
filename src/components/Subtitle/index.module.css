@@ -1,31 +1,59 @@
 .subtitle {
-  margin: 25px 10px 20px;
+  margin: 20px 10px 20px;
   overflow-y: scroll;
   transition: all 0.5s;
+  background: rgba(255, 255, 255, 0.2);
+  flex-grow: 1;
+}
+
+.subtitleContainer {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  height: 100%;
 }
 .subtitle::-webkit-scrollbar {
   display: none;
 }
 .subtitle.active {
-  max-height: calc(100% - 130px);
+  /* max-height: calc(100% - 130px); */
 }
 .subtitle.inactive {
-  max-height: calc(100% - 42px);
+  /* max-height: calc(100% - 42px); */
 }
 .sentence {
   transition: all 0.5s;
   font-style: normal;
   display: inline-block;
-  font-weight: 300;
-  color: white;
-  font-size: 20px;
-  line-height: 24px;
   word-wrap: break-word;
 }
 
 .original,
 .translated {
   width: 49%;
+}
+
+.sentenceContainer {
+  font-weight: 300;
+  color: white;
+  font-size: 20px;
+  line-height: 24px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  padding: 5px;
+}
+.sentenceContainer:nth-child(2n) {
+  background: rgba(0,0,0,0.1);
+}
+
+.switch {
+  margin-left: 20px;
+}
+
+.switchContainer {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  color: white;
+  margin: 0 10px;
 }

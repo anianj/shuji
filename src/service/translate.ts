@@ -38,6 +38,7 @@ function translate(keyword: string) {
         }
       })
       .then((result) => {
+        console.log(keyword);
         console.log(result);
         return result;
       })

@@ -1,10 +1,5 @@
 import { remote } from 'electron';
-import React, {
-  useMemo,
-  useState,
-  useCallback,
-  useRef,
-} from 'react';
+import React, { useMemo, useState, useCallback, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import classnames from 'classnames';
 import { MAIN_STATUS } from '../../common';
@@ -68,9 +63,11 @@ const Main: React.FC<{}> = () => {
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
     >
-      {(
-        <Subtitle content={output.content} translated={output.translated} active={active} />
-      )}
+      <Subtitle
+        content={output.content}
+        translated={output.translated}
+        active={active}
+      />
       <div
         className={classnames(styles.close, activeClass)}
         onClick={handleClose}

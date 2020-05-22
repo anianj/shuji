@@ -7,8 +7,8 @@ import { app, BrowserWindow } from 'electron';
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    height: 90,
-    width: 567,
+    height: 355,
+    width: 750,
     minWidth: 567,
     minHeight: 90,
     resizable: true,
