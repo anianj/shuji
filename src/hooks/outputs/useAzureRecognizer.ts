@@ -1,31 +1,34 @@
 import { useState, useEffect } from 'react';
 import io from 'socket.io-client';
-import { downsampleBuffer } from './util';
+import { downSampleBuffer } from './util';
 import { MAIN_STATUS } from '../../common';
 import translate from '../../service/translate';
 
 function useStackOutPut(transcript: string, status: MAIN_STATUS) {
-  const [stack, setStack] = useState<string[]>([]);
-  const [output, setOutput] = useState<string[]>([]);
-
+  const sentence = transcript.replace(/\$[A-Z]+\$/, '');
+  const [outputStack, setOutputStack] = useState<string[]>([]);
+  const [outputTranslated, setOutputTranslatedStack] = useState<string[]>([]);
+  const isEndSentence = /^\$END\$/.test(transcript);
   useEffect(() => {
-    const sentence = transcript.replace(/\$[A-Z]+\$/, '');
-    if (stack[stack.length - 1] === sentence) return;
-    setOutput(stack.concat([sentence]));
-    if (/^\$END\$/.test(transcript)) {
-      translate(sentence).then((r) => {
-        if (r) {
-          setStack(stack.concat([sentence, r]));
-        }
+    if (
+      isEndSentence &&
+      sentence !== 'undefined' &&
+      outputStack[outputStack.length - 1] !== sentence
+    ) {
+      setOutputStack((old) => old.concat(sentence));
+      translate(sentence).then((result) => {
+        setOutputTranslatedStack((translated) => translated.concat(result));
+      }).catch(() => {
+        setOutputTranslatedStack((translated) => translated.concat('error'))
       });
     }
-  }, [stack, transcript]);
-  useEffect(() => {
-    if (status === MAIN_STATUS.IDLE) {
-      setStack([]);
-    }
-  }, [status]);
-  return output;
+  }, [isEndSentence, outputStack, sentence, transcript]);
+  return {
+    original: outputStack.concat(
+      isEndSentence || sentence === 'undefined' ? '' : sentence,
+    ),
+    translated: outputTranslated,
+  };
 }
 
 export default function useAliyunDirectRecognizer(
@@ -56,7 +59,7 @@ export default function useAliyunDirectRecognizer(
         setTranscript('');
       });
       socket.on('transcript', (transcript: any) => {
-        setState('transcripting');
+        setState('transcript');
         setTranscript(transcript);
       });
       socket.on('ready', () => {
@@ -64,7 +67,7 @@ export default function useAliyunDirectRecognizer(
         recorder.onaudioprocess = (evt) => {
           socket.emit(
             'data',
-            downsampleBuffer(evt.inputBuffer.getChannelData(0), 16000, 16000),
+            downSampleBuffer(evt.inputBuffer.getChannelData(0), 16000, 16000),
           );
         };
       });
@@ -77,5 +80,9 @@ export default function useAliyunDirectRecognizer(
     }
   }, [context, input, status]);
 
-  return { status: state, content: output };
+  return {
+    status: state,
+    content: output.original,
+    translated: output.translated,
+  };
 }

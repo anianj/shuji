@@ -1,4 +1,4 @@
-export function downsampleBuffer(buffer: Float32Array, sampleRate: number, outSampleRate: number) {
+export function downSampleBuffer(buffer: Float32Array, sampleRate: number, outSampleRate: number) {
 	const sampleRateRatio = sampleRate / outSampleRate;
 	const result = new Int16Array(Math.round(buffer.length / sampleRateRatio));
 	let offsetResult = 0;

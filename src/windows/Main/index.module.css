@@ -33,7 +33,7 @@
   left:50%;
   transform: translate3d(-50%,-50%,0);
 }
-.close.deactive{
+.close.inactive{
   opacity: .3;
   background-color: #CCC;
 }
@@ -70,7 +70,7 @@
   vertical-align: middle;
   margin-left: 10px;
 }
-.networkStatus.transcripting{
+.networkStatus.transcript{
   background-color: greenyellow;
 }
 .networkStatus.ready{
@@ -85,7 +85,7 @@
 .bottom.active{
   transform: translateY(0);
 }
-.bottom.deactive{
+.bottom.inactive{
   transform: translateY(70px);
 }
 

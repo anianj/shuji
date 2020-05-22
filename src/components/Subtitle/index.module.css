@@ -1,17 +1,21 @@
-.subtitle{
-  margin:25px 10px 20px;
+.subtitle {
+  margin: 25px 10px 20px;
   overflow-y: scroll;
-  transition: all .5s;
+  transition: all 0.5s;
+  display: flex;
+  justify-content: space-between;
 }
-.subtitle::-webkit-scrollbar {display:none}
-.subtitle.active{
+.subtitle::-webkit-scrollbar {
+  display: none;
+}
+.subtitle.active {
   max-height: calc(100% - 130px);
 }
-.subtitle.deactive{
+.subtitle.inactive {
   max-height: calc(100% - 42px);
 }
-.sentence{
-  transition: all .5s;
+.sentence {
+  transition: all 0.5s;
   font-style: normal;
   display: inline-block;
   font-weight: 300;
@@ -19,4 +23,9 @@
   font-size: 20px;
   line-height: 24px;
   word-wrap: break-word;
+}
+
+.original,
+.translated {
+  width: 49%;
 }

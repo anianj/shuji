@@ -6,8 +6,6 @@ declare module "getusermedia"{
   export default any;
 }
 
-declare global {
-  interface Window {
-    TKK: string;
-  }
+interface Window {
+  TKK: string;
 }

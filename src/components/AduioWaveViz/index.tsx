@@ -60,7 +60,7 @@ const AudioWaveViz: React.FC<AudioWaveVizProps> = ({ context, input }) => {
       input.disconnect(analyser);
       window.cancelAnimationFrame(nextFrameAnimationId);
     }
-  }, [canvas.current, context, input]);
+  }, [WIDTH, context, input]);
 
   return (
     <div className={styles.viz}>

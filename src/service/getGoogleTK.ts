@@ -1,18 +1,16 @@
 
-// @ts-nocheck
 import googleTK from './googleTK';
 import { fetchGoogleChina } from './api';
 
 let cacheTk: string;
 
-export default (keyString) => {
+export default (keyString: string) => {
   if (cacheTk) {
-    Promise.resolve(googleTK(keyString, cacheTk));
+    return Promise.resolve(googleTK(keyString, cacheTk));
   }
   return fetchGoogleChina().then((html) => {
     const TKKMatch = html.match(/tkk:'([\d.]+)'/);
     const TKK = TKKMatch && TKKMatch[1];
-    console.log(TKKMatch)
     if (TKK) {
       window.TKK = TKK;
       if (typeof window.TKK !== 'undefined') {
@@ -21,9 +19,8 @@ export default (keyString) => {
         return tk;
       }
     }
+  }).catch((e) => {
+    cacheTk = ''
+    throw e
   });
 };
-
-export const clearCache = () => {
-  cacheTk = ''
-}
