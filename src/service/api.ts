@@ -1,7 +1,4 @@
 
-import fetch from 'fetch-jsonp';
-
-
 export const fetchGoogleChina = () => window.fetch(new Request('https://translate.google.cn')).then(r => r.text())
 
 
